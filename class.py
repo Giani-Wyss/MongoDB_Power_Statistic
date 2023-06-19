@@ -2,9 +2,11 @@ import psutil
 import time
 from pymongo import MongoClient
 import matplotlib.pyplot as plt
+import config
 
 class Power:
-    MONGODB_CONNECTION_STRING = 'mongodb://localhost:27017/'
+    client = MongoClient(config.MONGODB_CONNECTION_STRING)
+    col = MongoClient(config.MONGODB_CONNECTION_STRING)["power_stats"]["logs"]
 
     def __init__(self):
         self.cpu_percent = None
@@ -34,15 +36,13 @@ class Power:
 
     @staticmethod
     def delete_old_logs():
-        client = MongoClient(Power.MONGODB_CONNECTION_STRING)
-        db = client['power_stats']
-        collection = db['logs']
-        count = collection.count_documents({})
+        col = Power.col
+        count = col.count_documents({})
         if count > 10000:
-            oldest_logs = collection.find().sort('timestamp', 1).limit(count - 10000)
+            oldest_logs = col.find().sort('timestamp', 1).limit(count - 10000)
             for log in oldest_logs:
-                collection.delete_one({'_id': log['_id']})
-        client.close()
+                col.delete_one({'_id': log['_id']})
+        Power.client.close()
 
     @staticmethod
     def plot_graph():
