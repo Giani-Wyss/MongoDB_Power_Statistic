@@ -3,6 +3,7 @@ import time
 from pymongo import MongoClient
 import matplotlib.pyplot as plt
 import config
+import datetime
 
 class Power:
     client = MongoClient(config.MONGODB_CONNECTION_STRING)
@@ -31,6 +32,7 @@ class Power:
         client = MongoClient(config.MONGODB_CONNECTION_STRING)
         db = client['power_stats']
         collection = db['logs']
+        
         log = {
             'cpu_percent': self.cpu_percent,
             'ram_total': self.ram_total,
@@ -77,7 +79,7 @@ class Power:
         plt.plot(timestamps, ram_total, label='RAM Total')
         plt.plot(timestamps, ram_used, label='RAM Used')
         plt.xlabel('Timestamp')
-        plt.ylabel('Percentage / Bytes')
+        plt.ylabel('Percentage / GB')
         plt.title('Power Statistics')
         plt.legend()
         plt.grid(True)
