@@ -22,7 +22,7 @@ class Power:
         self.timestamp = time.time()
 
     def save_to_database(self):
-        client = MongoClient(self.MONGODB_CONNECTION_STRING)
+        client = MongoClient(config.MONGODB_CONNECTION_STRING)
         db = client['power_stats']
         collection = db['logs']
         log = {
@@ -46,7 +46,7 @@ class Power:
 
     @staticmethod
     def plot_graph():
-        client = MongoClient(Power.MONGODB_CONNECTION_STRING)
+        client = MongoClient(config.MONGODB_CONNECTION_STRING)
         db = client['power_stats']
         collection = db['logs']
         data = collection.find()
@@ -82,4 +82,5 @@ if __name__ == '__main__':
         power.update_stats()
         power.save_to_database()
         power.delete_old_logs()
+        print("works")
         time.sleep(1)  # Wait for 1 second before updating again
