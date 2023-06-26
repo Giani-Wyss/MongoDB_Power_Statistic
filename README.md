@@ -13,8 +13,7 @@ After installation, run the following code as administrator in the project direc
 Bevor Execution add a config.py file and in there ```MONGODB_CONNECTION_STRING="mongodb+srv://<Username>:<Password>@mongo.e1s0tah.mongodb.net/"```
 
 ## Contributors
-[Dines Nimalthas](https://github.com/Reavexx)
-
 [Gianmarco Wyss](https://github.com/Giani-Wyss)
 
+[Dines Nimalthas](https://github.com/Reavexx)
 
