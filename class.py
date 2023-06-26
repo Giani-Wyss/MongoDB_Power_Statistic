@@ -15,13 +15,19 @@ class Power:
         self.timestamp = None
 
     def update_stats(self):
+        # Update CPU percentage
         self.cpu_percent = psutil.cpu_percent()
+
+        # Update RAM statistics
         mem = psutil.virtual_memory()
-        self.ram_total = mem.total
-        self.ram_used = mem.used
+        self.ram_total = mem.total / (1024 * 1024 * 1024)  # Convert to GB
+        self.ram_used = mem.used / (1024 * 1024 * 1024)  # Convert to GB
+
+        # Update timestamp
         self.timestamp = time.time()
 
     def save_to_database(self):
+        # Save power statistics to MongoDB database
         client = MongoClient(config.MONGODB_CONNECTION_STRING)
         db = client['power_stats']
         collection = db['logs']
@@ -36,6 +42,7 @@ class Power:
 
     @staticmethod
     def delete_old_logs():
+        # Delete old logs from the database if the count exceeds 10000
         col = Power.col
         count = col.count_documents({})
         if count > 10000:
@@ -46,6 +53,7 @@ class Power:
 
     @staticmethod
     def plot_graph():
+        # Plot power statistics grap
         client = MongoClient(config.MONGODB_CONNECTION_STRING)
         db = client['power_stats']
         collection = db['logs']
